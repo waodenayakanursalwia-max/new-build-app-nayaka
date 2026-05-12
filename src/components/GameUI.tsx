@@ -66,8 +66,31 @@ export const GameUI: React.FC<GameUIProps> = ({ level, onExit, onComplete }) => 
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Allow number keys 1-4 to select options
+      if (['1', '2', '3', '4'].includes(e.key)) {
+        const index = parseInt(e.key) - 1;
+        if (currentChallenge.options[index]) {
+          handleSelectOption(currentChallenge.options[index].id);
+        }
+      }
+      // Press 'h' for hint
+      if (e.key.toLowerCase() === 'h') {
+        handleShowHint();
+      }
+      // Press Escape to exit
+      if (e.key === 'Escape') {
+        onExit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentChallenge, selectedIds, isAnimating]);
+
   return (
-    <div className="fixed inset-0 bg-slate-900 flex flex-col items-center justify-between p-8 font-sans overflow-hidden">
+    <div className="fixed inset-0 bg-slate-900 flex flex-col items-center justify-start p-4 md:p-8 font-sans overflow-y-auto">
       {/* Background Ambience */}
       <div 
         className="absolute inset-0 opacity-20 pointer-events-none transition-colors duration-1000"

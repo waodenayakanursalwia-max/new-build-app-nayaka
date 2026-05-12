@@ -41,7 +41,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <AnimatePresence mode="wait">
         {userState.currentLevel === null ? (
           <motion.div
