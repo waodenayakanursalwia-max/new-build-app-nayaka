@@ -55,10 +55,37 @@ Nilai yang dibutuhkan:
 
 Aplikasi ini sudah dikonfigurasi untuk langsung di-deploy ke Vercel.
 
-1. Hubungkan akun GitHub Anda ke Vercel.
-2. Pilih repositori `echopath-word-builders`.
-3. Vercel akan secara otomatis mendeteksi pengaturan Vite.
-4. Pastikan untuk menambahkan **Environment Variables** di dashboard Vercel jika Anda menggunakan fitur AI.
+### 1. Persiapan GitHub
+Jika Anda belum meng-upload kode ke GitHub:
+1. Buat repositori baru di GitHub.
+2. Jalankan perintah berikut di terminal komputer Anda:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin <URL_REPOSITORI_GITHUB_ANDA>
+   git push -u origin main
+   ```
+
+### 2. Hubungkan ke Vercel
+1. Masuk ke [Vercel](https://vercel.com).
+2. Klik **"Add New"** > **"Project"**.
+3. Pilih repositori GitHub Anda.
+4. Pada bagian **Build & Development Settings**:
+   - **Framework Preset**: Pilih `Vite` (Vercel biasanya mendeteksi ini secara otomatis).
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+5. Pada bagian **Environment Variables**:
+   - Tambahkan `GEMINI_API_KEY` jika Anda ingin fitur Hint AI berfungsi.
+6. Klik **Deploy**.
+
+### Solusi Error "Not Found" di Vercel
+Jika Anda mendapatkan error "Not Found" setelah deploy:
+1. **Pastikan `index.html` berada di root folder**: Jangan pindahkan `index.html` ke dalam folder `src` atau `public`. Proyek ini sudah meletakkannya di tempat yang benar.
+2. **Cek `vercel.json`**: File ini sudah saya sertakan untuk menangani routing Single Page Application (SPA). Pastikan file ini ikut ter-upload ke GitHub.
+3. **Internal Routing**: Jika Anda menggunakan navigasi, pastikan semua path diarahkan kembali ke `index.html` (sudah diatur di `vercel.json`).
+4. **Case Sensitivity**: Pastikan nama file yang di-import di kode (seperti `import App from './App.tsx'`) sama persis besar-kecil hurufnya dengan nama file aslinya. Contoh: `App.tsx` tidak sama dengan `app.tsx`.
 
 ## Struktur Proyek
 
