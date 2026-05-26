@@ -1,6 +1,6 @@
 {
-  "name": "EchoPath: Word Builders (AI Edition)",
-  "description": "A 32-bit pixel-art educational word-building game for children aged 6-12, featuring AI-powered hints and immersive levels.",
-  "requestFramePermissions": [],
-  "majorCapabilities": []
+  "name": "TotSpeak AI",
+  "description": "Decipher and understand your toddler's babbles, behaviors, and drawings using empathetic, scientifically grounded developmental coaching.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

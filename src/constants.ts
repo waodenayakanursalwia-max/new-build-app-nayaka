@@ -1,197 +1,36 @@
-import { Level } from './types';
+import { SampleScenario } from './types';
 
-export const LEVELS: Level[] = [
+export const SAMPLE_SCENARIOS: SampleScenario[] = [
   {
-    id: 1,
-    title: "Dino Forest",
-    description: "Begin your quest through the lush leafy woods!",
-    ageRange: "Ages 6-7",
-    color: "#22c55e",
-    emoji: "🦖",
-    challenges: [
-      {
-        id: "l1-c1",
-        question: "The green dinosaur eats an [___].",
-        options: [
-          { id: "apple", label: "Apple", icon: "🍎" },
-          { id: "cake", label: "Cake", icon: "🍰" }
-        ],
-        correctIds: ["apple"],
-        complexity: 'simple'
-      },
-      {
-        id: "l1-c2",
-        question: "Look at the big [___].",
-        options: [
-          { id: "tree", label: "Tree", icon: "🌳" },
-          { id: "cloud", label: "Cloud", icon: "☁️" }
-        ],
-        correctIds: ["tree"],
-        complexity: 'simple'
-      },
-      {
-        id: "l1-c3",
-        question: "A small [___] is jumping.",
-        options: [
-          { id: "frog", label: "Frog", icon: "🐸" },
-          { id: "fish", label: "Fish", icon: "🐟" }
-        ],
-        correctIds: ["frog"],
-        complexity: 'medium'
-      },
-      {
-        id: "l1-c4",
-        question: "The [___] is very bright.",
-        options: [
-          { id: "sun", label: "Sun", icon: "☀️" },
-          { id: "moon", label: "Moon", icon: "🌙" }
-        ],
-        correctIds: ["sun"],
-        complexity: 'medium'
-      },
-      {
-        id: "l1-c5",
-        question: "The [___] likes the [___].",
-        options: [
-          { id: "dino", label: "Dino", icon: "🦖" },
-          { id: "egg", label: "Egg", icon: "🥚" },
-          { id: "star", label: "Star", icon: "⭐" }
-        ],
-        correctIds: ["dino", "egg"],
-        complexity: 'boss'
-      }
-    ]
+    id: "destruktor-balok",
+    title: "The Tower Crasher",
+    age: "24 Months (2 Years)",
+    type: "behavior",
+    description: "Builds tall blocks over and over, then smashes them down with a loud roar 'BOOM!' while laughing hysterically and doing it all over again.",
+    placeholderText: "Loves building a tall tower of blocks, only to smash it down laughing. He repeats this process over and over."
   },
   {
-    id: 2,
-    title: "Space Station",
-    description: "Build sentences among the stars and rockets!",
-    ageRange: "Ages 8-9",
-    color: "#3b82f6",
-    emoji: "🚀",
-    challenges: [
-      {
-        id: "l2-c1",
-        question: "The rocket is [___] to the moon.",
-        options: [
-          { id: "flying", label: "flying", icon: "✈️" },
-          { id: "walking", label: "walking", icon: "🚶" }
-        ],
-        correctIds: ["flying"],
-        complexity: 'simple'
-      },
-      {
-        id: "l2-c2",
-        question: "Stars are [___] in the sky.",
-        options: [
-          { id: "shining", label: "shining", icon: "✨" },
-          { id: "sleeping", label: "sleeping", icon: "😴" }
-        ],
-        correctIds: ["shining"],
-        complexity: 'simple'
-      },
-      {
-        id: "l2-c3",
-        question: "The [___] wears a [___].",
-        options: [
-          { id: "spacer", label: "Astronaut", icon: "👨‍🚀" },
-          { id: "helmet", label: "Helmet", icon: "🪖" },
-          { id: "hat", label: "Hat", icon: "🎩" }
-        ],
-        correctIds: ["spacer", "helmet"],
-        complexity: 'medium'
-      },
-      {
-        id: "l2-c4",
-        question: "Eat your [___] in space.",
-        options: [
-          { id: "pizza", label: "Pizza", icon: "🍕" },
-          { id: "juice", label: "Juice", icon: "🧃" }
-        ],
-        correctIds: ["pizza"],
-        complexity: 'medium'
-      },
-      {
-        id: "l2-c5",
-        question: "We [___] the [___] to Earth.",
-        options: [
-          { id: "ride", label: "ride", icon: "🏇" },
-          { id: "rocket", label: "rocket", icon: "🚀" },
-          { id: "walk", label: "walk", icon: "🚶" }
-        ],
-        correctIds: ["ride", "rocket"],
-        complexity: 'boss'
-      }
-    ]
+    id: "naga-lingkaran",
+    title: "The Guard Dragon Scribble",
+    age: "3.5 Years",
+    type: "drawing",
+    description: "Draws concentric messy red circles over and over on the paper, then proudly claims: 'This is the friendly fire dragon that watches our house at night!'",
+    imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&auto=format&fit=crop&q=80", // Child colorful brush painting
+    placeholderText: "My child painted messy overlapping red and yellow circles and said it's a giant dragon guarding our house."
   },
   {
-    id: 3,
-    title: "Pirate Cove",
-    description: "Master grammar to find the hidden treasure!",
-    ageRange: "Ages 10-12",
-    color: "#6366f1",
-    emoji: "🏴‍☠️",
-    challenges: [
-      {
-        id: "l3-c1",
-        question: "Yesterday, we [___] the secret key.",
-        options: [
-          { id: "find", label: "find", icon: "🔍" },
-          { id: "found", label: "found", icon: "🗝️" }
-        ],
-        correctIds: ["found"],
-        complexity: 'simple'
-      },
-      {
-        id: "l3-c2",
-        question: "The parrot [___] a shiny gold coin.",
-        options: [
-          { id: "has", label: "has", icon: "✅" },
-          { id: "have", label: "have", icon: "👐" }
-        ],
-        correctIds: ["has"],
-        complexity: 'simple'
-      },
-      {
-        id: "l3-c3",
-        question: "They [___] sailing [___] the ocean.",
-        options: [
-          { id: "are", label: "are", icon: "👥" },
-          { id: "across", label: "across", icon: "🌊" },
-          { id: "is", label: "is", icon: "☝️" }
-        ],
-        correctIds: ["are", "across"],
-        complexity: 'medium'
-      },
-      {
-        id: "l3-c4",
-        question: "If I [___] a pirate, I would find gold.",
-        options: [
-          { id: "was", label: "was", icon: "🕰️" },
-          { id: "were", label: "were", icon: "👥" }
-        ],
-        correctIds: ["were"],
-        complexity: 'medium'
-      },
-      {
-        id: "l3-c5",
-        question: "[___] [___] the treasure map now!",
-        options: [
-          { id: "we", label: "We", icon: "👥" },
-          { id: "read", label: "read", icon: "📖" },
-          { id: "reads", label: "reads", icon: "📚" }
-        ],
-        correctIds: ["we", "read"],
-        complexity: 'boss'
-      }
-    ]
+    id: "petualang-jendela",
+    title: "The 'Bah!' Explorer",
+    age: "14 Months",
+    type: "babble",
+    description: "Points excitedly towards the window every afternoon at 4 PM, shouting 'Bah! Bah! Bah!' with wide eyes and bouncing legs.",
+    placeholderText: "Points continuously to the window every evening shouting 'Bah!' high-pitched while looking back at me and smiling."
   }
 ];
 
-export const STICKERS = [
-  { id: 'dragon', icon: '🐲', name: 'Friendly Dragon' },
-  { id: 'star', icon: '⭐', name: 'Sparkling Star' },
-  { id: 'ship', icon: '🚢', name: 'Treasure Ship' },
-  { id: 'apple', icon: '🍎', name: 'Magic Apple' },
-  { id: 'rocket', icon: '🚀', name: 'Swift Rocket' },
-];
+export const APP_INFO = {
+  name: "TotSpeak AI",
+  subtitle: "Charming Baby Babble & Drawing Interpreter",
+  tagline: "Bridging scientific developmental psychology with parental wonder to help you decipher your child's magical world.",
+  description: "Upload a description of your child's creative behavior, write their babbles, or upload their wild drawing scribbles to receive an encouraging, scientifically-grounded developmental reading.",
+};

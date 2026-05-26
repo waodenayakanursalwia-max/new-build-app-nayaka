@@ -1,53 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-pixel: "VT323", monospace;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Quicksand", sans-serif;
   
-  --color-game-blue: #3b82f6;
-  --color-game-green: #22c55e;
-  --color-game-yellow: #eab308;
-  --color-game-indigo: #4f46e5;
-  --color-game-pink: #ec4899;
+  --color-brand-cream: #faf5ed;
+  --color-brand-sage: #4d7c5a;
+  --color-brand-terracotta: #d97d56;
+  --color-brand-clay: #efe7db;
+  --color-brand-blush: #e5989b;
+  --color-brand-sky: #7eb0d5;
 }
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased min-h-screen;
-    overflow-x: hidden;
+    @apply bg-zinc-50 text-slate-800 font-sans antialiased min-h-screen selection:bg-brand-blush/30;
+    font-family: var(--font-sans);
   }
 }
 
-/* Pixel Border Utility */
-.pixel-border {
-  box-shadow: 
-    0 -4px 0 0 black,
-    0 4px 0 0 black,
-    -4px 0 0 0 black,
-    4px 0 0 0 black;
+/* Rounded, friendly card custom shadows */
+.soft-card-shadow {
+  box-shadow: 0 10px 30px -10px rgba(77, 124, 90, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.pixel-border-sm {
-  box-shadow: 
-    0 -2px 0 0 black,
-    0 2px 0 0 black,
-    -2px 0 0 0 black,
-    2px 0 0 0 black;
+.soft-glow-shadow {
+  box-shadow: 0 0 40px rgba(217, 125, 86, 0.1);
 }
 
-.pixel-shadow {
-  box-shadow: 4px 4px 0 0 rgba(0,0,0,0.2);
+/* Beautiful custom inputs */
+.parent-input {
+  @apply w-full bg-white border border-stone-200 focus:border-brand-sage focus:ring-2 focus:ring-brand-sage/20 rounded-2xl p-4 text-slate-700 outline-none transition-all duration-200;
 }
 
-.pixel-corners {
-  position: relative;
-  border: 4px solid black;
-  clip-path: polygon(
-    0 4px, 4px 4px, 4px 0,
-    calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
-    100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
-    4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
-  );
+/* Custom cute scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(77, 124, 90, 0.2);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(77, 124, 90, 0.4);
+}
