@@ -557,17 +557,17 @@ export default function App() {
       <CuteDoodleBackground />
 
       {/* Main App Bar Header */}
-      <header className="bg-white/95 backdrop-blur-md border-b border-blue-100/80 py-5 px-4 md:px-8 sticky top-0 z-40 shadow-sm relative">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-5">
+      <header className="bg-white/95 backdrop-blur-md border-b border-blue-100/80 py-1.5 sm:py-2 px-3 md:px-6 sticky top-0 z-40 shadow-sm relative">
+        <div className="max-w-6xl mx-auto flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-2.5">
           
           {/* Logo Brand Title */}
           <AppLogoTitle subTitle={t.subTitle} tagText={t.resultsPsychologistTag} />
 
           {/* Tab Navigation Menu + Language Selector */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+          <div className="flex flex-row flex-wrap items-center gap-2 w-full lg:w-auto justify-center sm:justify-between lg:justify-end">
             
             {/* Nav Tabs */}
-            <nav className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/50 w-full overflow-x-auto sm:w-auto">
+            <nav className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/50 overflow-x-auto">
               <button
                 onClick={() => { audioSystem.playDreamChime(); setActiveTab('interpreter'); setErrorMessage(null); }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
@@ -732,7 +732,7 @@ export default function App() {
       </header>
 
       {/* Main Workspace Frame container */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 md:px-8 py-10 z-10 relative">
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 md:px-8 py-4 sm:py-6 z-10 relative">
         
         <AnimatePresence mode="wait">
           
@@ -744,7 +744,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
-              className="space-y-12"
+              className="space-y-6 md:space-y-8"
             >
               
               {/* Landing Hero */}
