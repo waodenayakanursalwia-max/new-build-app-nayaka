@@ -5,12 +5,12 @@
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Quicksand", sans-serif;
   
-  --color-brand-cream: #faf5ed;
-  --color-brand-sage: #4d7c5a;
-  --color-brand-terracotta: #d97d56;
-  --color-brand-clay: #efe7db;
-  --color-brand-blush: #e5989b;
-  --color-brand-sky: #7eb0d5;
+  --color-brand-cream: #f2f7fc;
+  --color-brand-sage: #4b8fc4;
+  --color-brand-terracotta: #f09597;
+  --color-brand-clay: #e2ecf5;
+  --color-brand-blush: #ffc8c8;
+  --color-brand-sky: #6ca0dc;
 }
 
 @layer base {

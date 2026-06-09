@@ -1,5 +1,5 @@
 {
-  "name": "TotSpeak AI",
+  "name": "LITTLE THINGS",
   "description": "Decipher and understand your toddler's babbles, behaviors, and drawings using empathetic, scientifically grounded developmental coaching.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
