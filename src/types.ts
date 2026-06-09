@@ -1,8 +1,20 @@
-export interface InterpretationResponse {
+export interface InterpretationResponseItem {
   magicBehindIt: string;
   hiddenMilestone: string;
   playfulActionPlan: string[];
   wordOfEncouragement: string;
+  isWarning?: boolean;
+}
+
+export interface InterpretationResponse {
+  en?: InterpretationResponseItem;
+  id?: InterpretationResponseItem;
+  zh?: InterpretationResponseItem;
+  // Fallbacks for backward compatibility
+  magicBehindIt?: string;
+  hiddenMilestone?: string;
+  playfulActionPlan?: string[];
+  wordOfEncouragement?: string;
   isWarning?: boolean;
 }
 

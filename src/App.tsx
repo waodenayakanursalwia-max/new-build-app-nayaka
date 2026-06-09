@@ -66,6 +66,32 @@ export default function App() {
   // Current dictionary translation object
   const t = TRANSLATIONS[lang];
 
+  // Helper to fetch the current language representation from multilingual translation object
+  const getLocalizedInterpretation = (
+    interp: any,
+    currentLang: 'en' | 'id' | 'zh'
+  ): InterpretationResponse => {
+    if (!interp) return { magicBehindIt: '', hiddenMilestone: '', playfulActionPlan: [], wordOfEncouragement: '', isWarning: false };
+    
+    if (interp[currentLang]) {
+      return {
+        magicBehindIt: interp[currentLang].magicBehindIt,
+        hiddenMilestone: interp[currentLang].hiddenMilestone,
+        playfulActionPlan: interp[currentLang].playfulActionPlan,
+        wordOfEncouragement: interp[currentLang].wordOfEncouragement,
+        isWarning: interp.isWarning
+      };
+    }
+    
+    return {
+      magicBehindIt: interp.magicBehindIt || '',
+      hiddenMilestone: interp.hiddenMilestone || '',
+      playfulActionPlan: interp.playfulActionPlan || [],
+      wordOfEncouragement: interp.wordOfEncouragement || '',
+      isWarning: interp.isWarning
+    };
+  };
+
   // Input form states
   const [prompt, setPrompt] = useState('');
   const [age, setAge] = useState('24 Months (2 Years)');
@@ -546,6 +572,8 @@ export default function App() {
 
   // Render language-specific Play Plan activities
   const currentActivities = PLAY_ACTIVITIES.filter(act => act.age === plannerAge);
+
+  const activeInterpretation = getLocalizedInterpretation(interpretation, lang);
 
   return (
     <div className="min-h-screen bg-brand-cream/60 flex flex-col font-sans selection:bg-brand-blush/40 relative">
@@ -1122,7 +1150,7 @@ export default function App() {
                               {t.resultsMagicBehindIt}
                             </h4>
                             <p className="text-sm text-stone-600 leading-relaxed font-sans mt-1">
-                              {interpretation.magicBehindIt}
+                              {activeInterpretation.magicBehindIt}
                             </p>
                           </div>
 
@@ -1133,7 +1161,7 @@ export default function App() {
                               {t.resultsHiddenMilestone}
                             </h4>
                             <p className="text-sm text-stone-600 leading-relaxed font-sans mt-1">
-                              {interpretation.hiddenMilestone}
+                              {activeInterpretation.hiddenMilestone}
                             </p>
                           </div>
 
@@ -1144,7 +1172,7 @@ export default function App() {
                               {t.resultsPlayfulActionPlan}
                             </h4>
                             <ul className="space-y-2.5">
-                              {interpretation.playfulActionPlan && interpretation.playfulActionPlan.map((act, i) => (
+                              {activeInterpretation.playfulActionPlan && activeInterpretation.playfulActionPlan.map((act, i) => (
                                 <li key={i} className="text-xs text-stone-600 leading-relaxed font-sans flex items-start gap-2.5">
                                   <span className="bg-brand-sage/15 text-brand-sage w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-black mt-0.5">
                                     {i + 1}
@@ -1162,12 +1190,12 @@ export default function App() {
                               {t.resultsEncouragement}
                             </h4>
                             <p className="text-xs text-stone-500 italic leading-relaxed font-sans mt-1">
-                              "{interpretation.wordOfEncouragement}"
+                              "{activeInterpretation.wordOfEncouragement}"
                             </p>
                           </div>
 
                           {/* Pediatric Safety Warning callout */}
-                          {interpretation.isWarning && (
+                          {activeInterpretation.isWarning && (
                             <div className="bg-amber-50 rounded-2xl border border-amber-100 p-4 flex items-start gap-3">
                               <Stethoscope className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                               <div className="text-xs text-amber-800">
@@ -1950,97 +1978,100 @@ export default function App() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {history.map((item) => (
-                    <motion.div
-                      key={item.id}
-                      className="bg-white rounded-3xl border border-blue-100 p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
-                    >
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-start gap-2">
-                          <div className="flex items-center gap-2">
-                            <span className={`text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
-                              item.childBehaviorType === 'babble' ? 'bg-blue-50 text-blue-600' :
-                              item.childBehaviorType === 'drawing' ? 'bg-pink-50 text-pink-600' :
-                              'bg-orange-50 text-orange-600'
-                            }`}>
-                              {item.childBehaviorType === 'babble' ? t.presetBabble : item.childBehaviorType === 'drawing' ? t.presetDrawing : t.presetBehavior}
-                            </span>
-                            <span className="text-xs text-stone-400 font-bold">{item.timestamp}</span>
+                  {history.map((item) => {
+                    const itemActiveInterp = getLocalizedInterpretation(item.response, lang);
+                    return (
+                      <motion.div
+                        key={item.id}
+                        className="bg-white rounded-3xl border border-blue-100 p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
+                      >
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-start gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className={`text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                                item.childBehaviorType === 'babble' ? 'bg-blue-50 text-blue-600' :
+                                item.childBehaviorType === 'drawing' ? 'bg-pink-50 text-pink-600' :
+                                'bg-orange-50 text-orange-600'
+                              }`}>
+                                {item.childBehaviorType === 'babble' ? t.presetBabble : item.childBehaviorType === 'drawing' ? t.presetDrawing : t.presetBehavior}
+                              </span>
+                              <span className="text-xs text-stone-400 font-bold">{item.timestamp}</span>
+                            </div>
+                            
+                            <button
+                              onClick={(e) => deleteHistoryItem(item.id, e)}
+                              className="text-stone-400 hover:text-red-500 p-1 rounded-lg hover:bg-stone-50 transition-colors cursor-pointer"
+                              title="Delete this history entry"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
-                          
-                          <button
-                            onClick={(e) => deleteHistoryItem(item.id, e)}
-                            className="text-stone-400 hover:text-red-500 p-1 rounded-lg hover:bg-stone-50 transition-colors cursor-pointer"
-                            title="Delete this history entry"
+
+                          <div>
+                            <p className="text-[10px] text-stone-400 font-black uppercase tracking-wider">{t.historyItemContext} ({item.childAge})</p>
+                            <p className="text-xs font-medium text-stone-700 mt-1 line-clamp-3 leading-relaxed font-sans">
+                              "{item.inputPrompt}"
+                            </p>
+                          </div>
+
+                          {item.imageUrl && (
+                            <div className="h-28 rounded-xl overflow-hidden border border-stone-100 bg-stone-50 flex items-center justify-center">
+                              <img 
+                                src={item.imageUrl} 
+                                alt="Child scribble drawing" 
+                                className="h-full object-contain" 
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                          )}
+
+                          <div className="border-t border-stone-100/80 pt-4 space-y-3 bg-slate-50/20 p-3 rounded-xl">
+                            <div>
+                              <p className="text-[10px] font-black text-brand-sky flex items-center gap-1.5 uppercase">
+                                <span>🌟</span>
+                                {t.historyItemReading}
+                              </p>
+                              <p className="text-xs text-stone-500 mt-1 leading-relaxed font-sans">
+                                {itemActiveInterp.magicBehindIt}
+                              </p>
+                            </div>
+
+                            <div>
+                              <p className="text-[10px] font-black text-stone-700 flex items-center gap-1.5 uppercase">
+                                <span>💡</span>
+                                {t.historyItemMilestone}
+                              </p>
+                              <p className="text-xs text-stone-500 mt-1 leading-relaxed font-sans">
+                                {itemActiveInterp.hiddenMilestone}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-stone-100 flex justify-end">
+                          <FriendlyButton 
+                            variant="secondary" 
+                            size="sm" 
+                            className="text-xs font-bold"
+                            onClick={() => {
+                              setPrompt(item.inputPrompt);
+                              setAge(item.childAge);
+                              setBehaviorType(item.childBehaviorType);
+                              setInterpretation(item.response);
+                              setImage(item.imageUrl || null);
+                              setActiveTab('interpreter');
+                              // Scroll up smoothly
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
                           >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                            {t.historyItemBtnDetails}
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </FriendlyButton>
                         </div>
 
-                        <div>
-                          <p className="text-[10px] text-stone-400 font-black uppercase tracking-wider">{t.historyItemContext} ({item.childAge})</p>
-                          <p className="text-xs font-medium text-stone-700 mt-1 line-clamp-3 leading-relaxed font-sans">
-                            "{item.inputPrompt}"
-                          </p>
-                        </div>
-
-                        {item.imageUrl && (
-                          <div className="h-28 rounded-xl overflow-hidden border border-stone-100 bg-stone-50 flex items-center justify-center">
-                            <img 
-                              src={item.imageUrl} 
-                              alt="Child scribble drawing" 
-                              className="h-full object-contain" 
-                              referrerPolicy="no-referrer"
-                            />
-                          </div>
-                        )}
-
-                        <div className="border-t border-stone-100/80 pt-4 space-y-3 bg-slate-50/20 p-3 rounded-xl">
-                          <div>
-                            <p className="text-[10px] font-black text-brand-sky flex items-center gap-1.5 uppercase">
-                              <span>🌟</span>
-                              {t.historyItemReading}
-                            </p>
-                            <p className="text-xs text-stone-500 mt-1 leading-relaxed font-sans">
-                              {item.response.magicBehindIt}
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="text-[10px] font-black text-stone-700 flex items-center gap-1.5 uppercase">
-                              <span>💡</span>
-                              {t.historyItemMilestone}
-                            </p>
-                            <p className="text-xs text-stone-500 mt-1 leading-relaxed font-sans">
-                              {item.response.hiddenMilestone}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-stone-100 flex justify-end">
-                        <FriendlyButton 
-                          variant="secondary" 
-                          size="sm" 
-                          className="text-xs font-bold"
-                          onClick={() => {
-                            setPrompt(item.inputPrompt);
-                            setAge(item.childAge);
-                            setBehaviorType(item.childBehaviorType);
-                            setInterpretation(item.response);
-                            setImage(item.imageUrl || null);
-                            setActiveTab('interpreter');
-                            // Scroll up smoothly
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                          }}
-                        >
-                          {t.historyItemBtnDetails}
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </FriendlyButton>
-                      </div>
-
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               )}
 
