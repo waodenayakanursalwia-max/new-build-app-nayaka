@@ -63,11 +63,20 @@ app.post("/api/interpret", async (req, res) => {
       });
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: contentsParts,
-      config: {
-        systemInstruction: `You are "TotSpeak AI", a warm, empathetic, and expert child development psychologist and toddler language interpreter.
+    const modelsToTry = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3.1-flash-lite"];
+    let lastError: any = null;
+    let response: any = null;
+
+    for (const modelName of modelsToTry) {
+      let attempts = 2; // Try each model up to twice
+      for (let attempt = 1; attempt <= attempts; attempt++) {
+        try {
+          console.log(`Attempting generation with model ${modelName} (attempt ${attempt}/${attempts})...`);
+          response = await ai.models.generateContent({
+            model: modelName,
+            contents: contentsParts,
+            config: {
+              systemInstruction: `You are "TotSpeak AI", a warm, empathetic, and expert child development psychologist and toddler language interpreter.
 Your mission is to help parents worldwide decipher and understand their children's cryptic behaviors, drawings, or unstructured baby talk (babbling).
 
 Your interface and responses must be entirely in English. When interpreting inputs, strictly adhere to these principles:
@@ -82,36 +91,55 @@ Your interface and responses must be entirely in English. When interpreting inpu
 - isWarning: Boolean. Set to true if the query contains indications of extreme distress, potential organic development delays, physical symptoms, self-injury, or child safety items that require medical pediatric advice.
 
 CRITICAL SAFETY RULE: You are a developmental guide, NOT a medical diagnostic tool. If the user describes severe physical symptoms, extreme continuous distress, or potential developmental delays, gently and warmly advise them to consult a pediatrician or a professional child psychologist, while keeping the tone reassuring. In this case, 'isWarning' should be true.`,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            magicBehindIt: {
-              type: Type.STRING,
-              description: "Interpretation statement explaining child's thoughts/feelings.",
+              responseMimeType: "application/json",
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  magicBehindIt: {
+                    type: Type.STRING,
+                    description: "Interpretation statement explaining child's thoughts/feelings.",
+                  },
+                  hiddenMilestone: {
+                    type: Type.STRING,
+                    description: "Positive developmental milestone unlocked in this behavior.",
+                  },
+                  playfulActionPlan: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                    description: "Array of exactly 2 or 3 fun playful parenting suggestions.",
+                  },
+                  wordOfEncouragement: {
+                    type: Type.STRING,
+                    description: "Warm loving support message for the tired or proud parent.",
+                  },
+                  isWarning: {
+                    type: Type.BOOLEAN,
+                    description: "True only if clinical/pediatric review is advised.",
+                  },
+                },
+                required: ["magicBehindIt", "hiddenMilestone", "playfulActionPlan", "wordOfEncouragement", "isWarning"],
+              },
             },
-            hiddenMilestone: {
-              type: Type.STRING,
-              description: "Positive developmental milestone unlocked in this behavior.",
-            },
-            playfulActionPlan: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING },
-              description: "Array of exactly 2 or 3 fun playful parenting suggestions.",
-            },
-            wordOfEncouragement: {
-              type: Type.STRING,
-              description: "Warm loving support message for the tired or proud parent.",
-            },
-            isWarning: {
-              type: Type.BOOLEAN,
-              description: "True only if clinical/pediatric review is advised.",
-            },
-          },
-          required: ["magicBehindIt", "hiddenMilestone", "playfulActionPlan", "wordOfEncouragement", "isWarning"],
-        },
-      },
-    });
+          });
+          // Successful generation!
+          break;
+        } catch (err: any) {
+          lastError = err;
+          console.warn(`Error using model ${modelName} on attempt ${attempt}:`, err?.message || err);
+          if (attempt < attempts) {
+            // Apply exponential-like backoff sleep
+            await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+          }
+        }
+      }
+      if (response) {
+        break; // Successfully got response, stop trying other models
+      }
+    }
+
+    if (!response) {
+      throw lastError || new Error("Failed to generate content with any available models.");
+    }
 
     const parsedResponse = JSON.parse(response.text || "{}");
     return res.json(parsedResponse);
